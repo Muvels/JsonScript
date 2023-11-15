@@ -128,7 +128,7 @@ CommentStatement
 
 DeclareStatement
   = "declare" ws colon ws value:DeclareType ws
-    { return { type: "declareStatement", value: value }; }
+    { return { type: "variableDeclaration", name: value["name"], init: { type: value["type"], value: value["value"]}, additional: value }; }
 
 OtherStatement 
  = name:([a-zA-Z_][a-zA-Z0-9_]*) ws colon ws value:(parameterArray / types) ws
