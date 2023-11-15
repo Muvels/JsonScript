@@ -7,8 +7,25 @@ function<int>: {
     },
     code: 
     [
-         {comment: "Hello World"},
-         {declare: {type: <int>, scope: private, name: "abc", value: 9}},
-         {comment: "This is a comment"}
+        {
+            comment : 
+            "Hello World"
+        },
+        {
+            declare : 
+            {
+                type: <int>, scope: private, name: "abc", value: 9
+            }
+        },
+        {
+            comment : 
+            "This is a comment"
+        },
+        {
+            theFunctionCall : [1,9]
+        },
+        {
+            abc: "hello world"
+        }
     ]
 }
