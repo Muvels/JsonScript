@@ -28,6 +28,14 @@
                 },
                 {
                     abc: ""
+                },
+                {
+                    math : 
+                    {
+                        left: 1,
+                        op: "+",
+                        right: 2
+                    }
                 }
             ]
         }
@@ -43,15 +51,19 @@
         }
     },
     {
-        assign: 
-        { 
-            to: abc,  value: 1 
-        }
-    },
-    {
         math:
         {
-            left: 5 , op: "+" ,right: 2
+            left: 5, op: "+", right: 2
+        }
+    }, 
+    { 
+        assign : 
+        { 
+            to : a, value: 
+                        { 
+                            math: 
+                            { left: 1, op: "+", right: 1}
+                        }
         }
     }
 ]
