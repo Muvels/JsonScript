@@ -24,15 +24,15 @@
                     "This is a comment"
                 },
                 {
-                    theFunctionCall : [1,9]
+                    -> : { proc: myFunction, parameters : []}
                 },
                 {
-                    abc: ""
+                    abc: 
                 },
                 {
                     math : 
                     {
-                        left: 1,
+                        left: 5,
                         op: "+",
                         right: 2
                     }

@@ -24,7 +24,7 @@ functionDefinition
     nameKeyword ws colon ws name:string ws comma ws
     parameterKeyword ws colon ws parameterObj:parameterObj ws comma ws
     codeNameKeyword colon ws statements:array ws closeBrace ws
-    { return { type: "procStatement", name, returnType, args: parameterObj, statements:statements }; }
+    { return { type: "procStatement", name:name.value, returnType, args: parameterObj, statements:statements }; }
 
 // JSON Standard
 object
@@ -57,7 +57,7 @@ parameterObj
 
 parameterMember
   = ws name:string ws colon ws value:typeRepresentations ws
-    { return { type: "identifier", value: name.value, internalType: value }; }
+    { return { type: "identifier", value: name.value, internalType: value.value }; }
    
 member
   = ws name:string ws colon ws value:typeRepresentations ws
@@ -128,15 +128,15 @@ CommentStatement
 
 DeclareStatement
   = "declare" ws colon ws value:DeclareType ws
-    { return { type: "variableDeclaration", name: value["name"], init: { type: value["type"], value: value["value"]}, additional: value }; }
+    { return { type: "variableDeclaration", name: value["name"].value, initializer: { type: value["value"].type, value: value["value"].value}, additional: value }; }
 
 AssignmentStatement 
   = "assign" ws colon ws value:AssignType ws
-   { return { type: "variableAssignment", name: value.to, value: value.from} }
+   { return { type: "variableAssignment", name: value.to.value, value: value.from} }
 
 MathStatement 
   = "math" ws colon ws value:MathType ws
-   { return { type: "binaryExpression", left: value.left,  operator: value.op, right: value.right} }
+   { return { type: "binaryExpression", left: value.left,  operator: value.op.value, right: value.right} }
 
 OtherStatement 
  = ws name:([a-zA-Z_][a-zA-Z0-9_]*) ws colon ws value:(parameterArray / types) ws
@@ -147,7 +147,7 @@ CommentType
   = string / number / CodeObject
   
 MathType 
-  = openBrace ws "left" ws colon ws left:(types / OtherStatement/ statements) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(types / OtherStatement) ws closeBrace ws
+  = openBrace ws "left" ws colon ws left:(identifier / types / CodeObject) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(identifier / types / CodeObject) ws closeBrace ws
   { return {left:left, op:op, right:right}; }
 
 AssignType 
@@ -308,7 +308,7 @@ createIdentifier
 
 identifier
   = value:([a-zA-Z_][a-zA-Z0-9_]*) 
-  { return {type:"numberLiteral", value:appendElements(value)}}
+  { return {type:"identifier", value:appendElements(value)}}
 
 unescaped
   = [^\0-\x1F\x22\x5C]

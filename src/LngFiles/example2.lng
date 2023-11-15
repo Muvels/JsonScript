@@ -1,0 +1,28 @@
+[
+    {
+        function<int>: {
+            functionName: "abc",
+            parameters: {
+                "a":<int>
+            },
+            code: 
+            [
+                {
+                    declare: {                        
+                        type: <int>, scope: public, name: "y", value: 10
+                    }
+                },
+                {
+                    declare: {                        
+                        type: <int>, scope: public, name: "x", value: 0
+                    }
+                },
+                {
+                    assign: {
+                        to: y, value: { math: { left: y, op: "+", right: 1} }
+                    }
+                }
+            ]
+        }
+    }
+]

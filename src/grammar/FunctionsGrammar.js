@@ -141,7 +141,7 @@ function peg$parse(input, options) {
       peg$startRuleFunctions = { start: peg$parsestart },
       peg$startRuleFunction  = peg$parsestart,
 
-      peg$c0 = function(returnType, name, parameterObj, statements) { return { type: "procStatement", name, returnType, args: parameterObj, statements:statements }; },
+      peg$c0 = function(returnType, name, parameterObj, statements) { return { type: "procStatement", name:name.value, returnType, args: parameterObj, statements:statements }; },
       peg$c1 = function(head, m) { return m; },
       peg$c2 = function(head, tail) {
               return head
@@ -154,7 +154,7 @@ function peg$parse(input, options) {
               });
               return array;
             },
-      peg$c5 = function(name, value) { return { type: "identifier", value: name.value, internalType: value }; },
+      peg$c5 = function(name, value) { return { type: "identifier", value: name.value, internalType: value.value }; },
       peg$c6 = function(name, value) { return { name: name, value: value }; },
       peg$c7 = function(head, v) { return v; },
       peg$c8 = function(head, tail) { return [head].concat(tail); },
@@ -164,13 +164,13 @@ function peg$parse(input, options) {
       peg$c12 = function(value) { return { type: "commentStatement", value: value }; },
       peg$c13 = "declare",
       peg$c14 = peg$literalExpectation("declare", false),
-      peg$c15 = function(value) { return { type: "variableDeclaration", name: value["name"], init: { type: value["type"], value: value["value"]}, additional: value }; },
+      peg$c15 = function(value) { return { type: "variableDeclaration", name: value["name"].value, initializer: { type: value["value"].type, value: value["value"].value}, additional: value }; },
       peg$c16 = "assign",
       peg$c17 = peg$literalExpectation("assign", false),
-      peg$c18 = function(value) { return { type: "variableAssignment", name: value.to, value: value.from} },
+      peg$c18 = function(value) { return { type: "variableAssignment", name: value.to.value, value: value.from} },
       peg$c19 = "math",
       peg$c20 = peg$literalExpectation("math", false),
-      peg$c21 = function(value) { return { type: "binaryExpression", left: value.left,  operator: value.op, right: value.right} },
+      peg$c21 = function(value) { return { type: "binaryExpression", left: value.left,  operator: value.op.value, right: value.right} },
       peg$c22 = /^[a-zA-Z_]/,
       peg$c23 = peg$classExpectation([["a", "z"], ["A", "Z"], "_"], false, false),
       peg$c24 = /^[a-zA-Z0-9_]/,
@@ -280,7 +280,7 @@ function peg$parse(input, options) {
       peg$c125 = /^[ \t\n\r]/,
       peg$c126 = peg$classExpectation([" ", "\t", "\n", "\r"], false, false),
       peg$c127 = function(value) { return appendElements(value); },
-      peg$c128 = function(value) { return {type:"numberLiteral", value:appendElements(value)}},
+      peg$c128 = function(value) { return {type:"identifier", value:appendElements(value)}},
       peg$c129 = /^[^\0-\x1F"\\]/,
       peg$c130 = peg$classExpectation([["\0", "\x1F"], "\"", "\\"], true, false),
       peg$c131 = /^[1-9]/,
@@ -1791,11 +1791,11 @@ function peg$parse(input, options) {
             if (s5 !== peg$FAILED) {
               s6 = peg$parsews();
               if (s6 !== peg$FAILED) {
-                s7 = peg$parsetypes();
+                s7 = peg$parseidentifier();
                 if (s7 === peg$FAILED) {
-                  s7 = peg$parseOtherStatement();
+                  s7 = peg$parsetypes();
                   if (s7 === peg$FAILED) {
-                    s7 = peg$parsestatements();
+                    s7 = peg$parseCodeObject();
                   }
                 }
                 if (s7 !== peg$FAILED) {
@@ -1841,9 +1841,12 @@ function peg$parse(input, options) {
                                             if (s21 !== peg$FAILED) {
                                               s22 = peg$parsews();
                                               if (s22 !== peg$FAILED) {
-                                                s23 = peg$parsetypes();
+                                                s23 = peg$parseidentifier();
                                                 if (s23 === peg$FAILED) {
-                                                  s23 = peg$parseOtherStatement();
+                                                  s23 = peg$parsetypes();
+                                                  if (s23 === peg$FAILED) {
+                                                    s23 = peg$parseCodeObject();
+                                                  }
                                                 }
                                                 if (s23 !== peg$FAILED) {
                                                   s24 = peg$parsews();
