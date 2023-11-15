@@ -57,7 +57,7 @@ parameterObj
 
 parameterMember
   = ws name:string ws colon ws value:typeRepresentations ws
-    { return { type: "identifier", name: name, value: value }; }
+    { return { type: "identifier", value: name.value, internalType: value }; }
    
 member
   = ws name:string ws colon ws value:typeRepresentations ws
@@ -203,7 +203,7 @@ valueTypes
   = types / CodeObject
 
 types
-  = char / string / int / number 
+  = number / int / char / string  / Integer 
 
 char
   = unescaped
@@ -223,15 +223,16 @@ char
     { return sequence; }
 
 Integer "integer"
-  = [0-9]+ { return parseInt(text(), 10); }
+  = [0-9]+ { return {type:"numberLiteral", value:parseInt(text(), 10)};}
 
 number "number"
   = minus? int frac? exp?
-    { return parseFloat(text()); }
+    { return {type:"numberLiteral", value: parseFloat(text())};}
+
 
 string "string"
   = quotation_mark chars:char* quotation_mark
-    { return chars.join(""); }
+    { return {type:"stringLiteral", value:chars.join("")};}
 
 e
   = [eE]
@@ -243,7 +244,8 @@ frac
   = decimal_point DIGIT+
 
 int
-  = zero / (digit1_9 DIGIT*)
+  = number:zero / number:(digit1_9 DIGIT*)
+  { return {type:"numberLiteral", value:parseInt(appendElements(number))}}
 
 // Tokens
 openBrace
@@ -300,9 +302,13 @@ HEXDIG
 ws
   = [ \t\n\r]*
 
-identifier
+createIdentifier
   = value:([a-zA-Z_][a-zA-Z0-9_]*) 
   { return appendElements(value); }
+
+identifier
+  = value:([a-zA-Z_][a-zA-Z0-9_]*) 
+  { return {type:"numberLiteral", value:appendElements(value)}}
 
 unescaped
   = [^\0-\x1F\x22\x5C]
