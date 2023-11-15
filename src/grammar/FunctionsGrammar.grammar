@@ -2,6 +2,15 @@
   function trimQuotes(str) {
     return str.substring(1, str.length - 1);
   }
+
+  function appendElements(arr) {
+    try {
+      return arr.join("").replace(/,/g, '');
+    }
+    catch{
+      return;
+    }
+  }
 }
 
 start
@@ -45,12 +54,13 @@ array
     end_array
     { return values !== null ? values : []; }
 
+
 // JSON Code Block
 CodeObject
   = openBrace
     members:(
-      ws head:(CommentStatement / DeclareStatement) ws
-      tail:(comma ws m:(CommentStatement / DeclareStatement) { return m; })*
+      ws head:(statements) ws
+      tail:(comma ws m:(statements) { return m; })*
       {
         var result = {};
         [head].concat(tail).forEach(function(element) {
@@ -67,12 +77,22 @@ CodeObject
           return members;
         } else {
           // Handle code block without "declare" or "comment"
-          throw new Error('Invalid code block');
+          return members;
         }
       } else {
         return {};
       }
     }
+
+parameterArray
+  = begin_array
+    values:(
+      head:types
+      tail:(comma ws v:types { return v; })*
+      { return [head].concat(tail); }
+    )?
+    end_array
+    { return values !== null ? values : []; }
 
 // New Rules for Comment and Declare Statements
 CommentStatement
@@ -83,13 +103,18 @@ DeclareStatement
   = "declare" ws colon ws value:DeclareType ws
     { return { name: "declare", value: value }; }
 
+OtherStatement 
+ = name:([a-zA-Z_][a-zA-Z0-9_]*) ws colon ws value:(parameterArray / types) ws
+    { return { name: appendElements(name), value: value }; }
+
+
 CommentType
   = string / number / CodeObject
 
 DeclareType
-  = openBrace
+  = openBrace ws
     content:declarationPart
-    closeBrace
+    ws closeBrace
     {
       var result = {};
       return content;
@@ -112,17 +137,10 @@ scopeValue
   =  scope: "private" / "public"
     { return trimQuotes(scope); }
 
-nameValue
-  = name:string
-    { return trimQuotes(name); }
-
-valueValue
-  = value:types
-    { return parseInt(value); }
-
 // Statements
+
 statements
-  = "declare" / "comment"
+  = CommentStatement / DeclareStatement / OtherStatement 
 
 // Datatypes Representation
 typeRepresentations
