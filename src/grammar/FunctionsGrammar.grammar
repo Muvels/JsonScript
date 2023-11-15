@@ -139,7 +139,7 @@ MathStatement
    { return { type: "binaryExpression", left: value.left,  operator: value.op, right: value.right} }
 
 OtherStatement 
- = name:([a-zA-Z_][a-zA-Z0-9_]*) ws colon ws value:(parameterArray / types) ws
+ = ws name:([a-zA-Z_][a-zA-Z0-9_]*) ws colon ws value:(parameterArray / types) ws
     { return { name: appendElements(name), value: value }; }
 
 
@@ -147,11 +147,11 @@ CommentType
   = string / number / CodeObject
   
 MathType 
-  = openBrace ws "left" ws colon ws left:(types / OtherStatement) ws comma ws "op" ws colon ws op:(string) ws comma "right" ws colon ws right:(types / OtherStatement) ws closeBrace ws
+  = openBrace ws "left" ws colon ws left:(types / OtherStatement/ statements) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(types / OtherStatement) ws closeBrace ws
   { return {left:left, op:op, right:right}; }
 
 AssignType 
-  = openBrace ws "to" ws colon ws to:identifier ws comma ws "value" ws colon ws command:(types / OtherStatement) ws closeBrace ws
+  = openBrace ws "to" ws colon ws to:identifier ws comma ws "value" ws colon ws command:(CodeObject / types) ws closeBrace ws
   { return {to:to, from:command}; }
   
 DeclareType
