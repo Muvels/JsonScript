@@ -1,0 +1,249 @@
+{
+  function trimQuotes(str) {
+    return str.substring(1, str.length - 1);
+  }
+}
+
+start
+  = functionDefinition
+
+functionDefinition
+  = functionKeyword ws returnType:typeRepresentations ws colon ws openBrace ws
+    nameKeyword ws colon ws functionName:string ws comma ws
+    parameterKeyword ws colon ws parameterObj:object ws comma ws
+    codeNameKeyword colon ws code:array ws closeBrace ws
+    { return { functionName, returnType, parameters: parameterObj, code }; }
+
+// JSON Standard
+object
+  = openBrace
+    members:(
+      ws head:member ws
+      tail:(comma ws m:member { return m; })*
+      {
+        var result = {};
+        [head].concat(tail).forEach(function(element) {
+          result[element.name] = element.value;
+        });
+        return result;
+      }
+    )?
+    closeBrace
+    { return members !== null ? members : {}; }
+
+member
+  = ws name:string ws colon ws value:typeRepresentations ws
+    { return { name: name, value: value }; }
+
+array
+  = begin_array
+    values:(
+      head:CodeObject
+      tail:(comma ws v:CodeObject { return v; })*
+      { return [head].concat(tail); }
+    )?
+    end_array
+    { return values !== null ? values : []; }
+
+// JSON Code Block
+CodeObject
+  = openBrace
+    members:(
+      ws head:(CommentStatement / DeclareStatement) ws
+      tail:(comma ws m:(CommentStatement / DeclareStatement) { return m; })*
+      {
+        var result = {};
+        [head].concat(tail).forEach(function(element) {
+          result[element.name] = element.value;
+        });
+        return result;
+      }
+    )?
+    closeBrace
+    {
+      if (members !== null) {
+        // Check if "declare" or "comment" is present
+        if ("declare" in members || "comment" in members) {
+          return members;
+        } else {
+          // Handle code block without "declare" or "comment"
+          throw new Error('Invalid code block');
+        }
+      } else {
+        return {};
+      }
+    }
+
+// New Rules for Comment and Declare Statements
+CommentStatement
+  = "comment" ws colon ws value:CommentType ws
+    { return { name: ("comment"), value: value }; }
+
+DeclareStatement
+  = "declare" ws colon ws value:DeclareType ws
+    { return { name: "declare", value: value }; }
+
+CommentType
+  = string / number / CodeObject
+
+DeclareType
+  = openBrace
+    content:declarationPart
+    closeBrace
+    {
+      var result = {};
+      return content;
+    }
+
+// Declaration of Variables
+declarationContent
+  = name:"declare" ws ":" ws openBrace ws content:declarationPart (comma ws declarationPart)* ws closeBrace
+    { return { name: name, value: content }; }
+
+declarationPart
+  = "type" ws ":" ws type:typeRepresentations comma ws
+   "scope" ws ":" ws scope:scopeValue comma ws
+   "name" ws ":" ws name:string comma ws
+   "value" ws ":" ws value:types ws
+  
+  { return {"type" : type, "scope" : scope, "name" : name, "value" : value}}
+
+scopeValue
+  =  scope: "private" / "public"
+    { return trimQuotes(scope); }
+
+nameValue
+  = name:string
+    { return trimQuotes(name); }
+
+valueValue
+  = value:types
+    { return parseInt(value); }
+
+// Statements
+statements
+  = "declare" / "comment"
+
+// Datatypes Representation
+typeRepresentations
+  = intRepresentation / floatRepresentation
+
+intRepresentation 
+  = "<int>"
+
+floatRepresentation
+  = "<float>"
+
+functionKeyword
+  = "function"
+
+// Datatypes
+valueTypes
+  = types / CodeObject
+
+types
+  = char / string / int / number 
+
+char
+  = unescaped
+  / escape
+    sequence:(
+      '"'
+      / "\\"
+      / "/"
+      / "b" { return "\b"; }
+      / "f" { return "\f"; }
+      / "n" { return "\n"; }
+      / "r" { return "\r"; }
+      / "t" { return "\t"; }
+      / "u" digits:$(HEXDIG HEXDIG HEXDIG HEXDIG)
+        { return String.fromCharCode(parseInt(digits, 16)); }
+    )
+    { return sequence; }
+
+Integer "integer"
+  = [0-9]+ { return parseInt(text(), 10); }
+
+number "number"
+  = minus? int frac? exp?
+    { return parseFloat(text()); }
+
+string "string"
+  = quotation_mark chars:char* quotation_mark
+    { return chars.join(""); }
+
+e
+  = [eE]
+
+exp
+  = e (minus / plus)? DIGIT+
+
+frac
+  = decimal_point DIGIT+
+
+int
+  = zero / (digit1_9 DIGIT*)
+
+// Tokens
+openBrace
+  = "{"
+
+closeBrace
+  = "}"
+
+colon
+  = ":"
+
+comma
+  = ","
+
+escape
+  = "\\"
+
+quotation_mark
+  = '"'
+  
+parameterKeyword 
+  = "parameters"
+
+nameKeyword
+  = "functionName"
+
+codeNameKeyword 
+  = "codeBlock" / "code"
+
+minus
+  = "-"
+
+plus
+  = "+"
+  
+begin_array
+  = ws "[" ws
+  
+end_array
+  = ws "]" ws
+
+decimal_point
+  = "."
+
+zero
+  = "0"
+
+// See RFC 4234, Appendix B (http://tools.ietf.org/html/rfc4234).
+DIGIT
+  = [0-9]
+HEXDIG
+  = [0-9a-f]i
+
+ws
+  = [ \t\n\r]*
+
+identifier
+  = [a-zA-Z_][a-zA-Z0-9_]* 
+
+unescaped
+  = [^\0-\x1F\x22\x5C]
+
+digit1_9
+  = [1-9]

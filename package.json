@@ -1,0 +1,21 @@
+{
+  "name": "jsonlang",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run" : "node ./build/index.js",
+    "runBuild" : "tsc && node ./build/index.js",
+    "compiledRun" : "pegjs src/grammar/FunctionsGrammar.grammar && tsc && node ./build/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pegjs": "^0.10.0",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0"
+  }
+}

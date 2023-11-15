@@ -1,0 +1,14 @@
+function<int>: {
+    functionName: "myFunction",
+    parameters: {
+        "parameter1":<int>,
+        "abc":<float>,
+        "anotherParam":<int>
+    },
+    code: 
+    [
+         {comment: "Hello World"},
+         {declare: {type: <int>, scope: private, name: "abc", value: 9}},
+         {comment: "This is a comment"}
+    ]
+}
