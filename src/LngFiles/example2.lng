@@ -24,5 +24,8 @@
                 }
             ]
         }
+    },
+    {
+        -> : { proc: abc, parameters : [0]}
     }
 ]

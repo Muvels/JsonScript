@@ -24,7 +24,7 @@
                     "This is a comment"
                 },
                 {
-                    -> : { proc: myFunction, parameters : []}
+                    -> : { proc: myFunction, parameters : [0]}
                 },
                 {
                     abc: 

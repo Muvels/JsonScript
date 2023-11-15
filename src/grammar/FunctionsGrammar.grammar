@@ -114,8 +114,8 @@ RootArray
 parameterArray
   = begin_array
     values:(
-      head:types
-      tail:(comma ws v:types { return v; })*
+      head:(types / "")
+      tail:(comma ws v:(types / "") { return v; })*
       { return [head].concat(tail); }
     )?
     end_array
@@ -134,6 +134,10 @@ AssignmentStatement
   = "assign" ws colon ws value:AssignType ws
    { return { type: "variableAssignment", name: value.to.value, value: value.from} }
 
+CallStatement 
+  = "->" ws colon ws value:CallType ws
+  { return {type:"callStatement", name: value.functionName, args:value.parameters};}
+  
 MathStatement 
   = "math" ws colon ws value:MathType ws
    { return { type: "binaryExpression", left: value.left,  operator: value.op.value, right: value.right} }
@@ -145,6 +149,10 @@ OtherStatement
 
 CommentType
   = string / number / CodeObject
+
+CallType
+  = openBrace ws "proc" ws colon ws functionName:identifier ws comma ws "parameters" ws colon ws parameters:parameterArray ws closeBrace ws
+  { return {functionName: functionName.value, parameters: parameters}}
   
 MathType 
   = openBrace ws "left" ws colon ws left:(identifier / types / CodeObject) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(identifier / types / CodeObject) ws closeBrace ws
@@ -183,7 +191,7 @@ scopeValue
 // Statements
 
 statements
-  = CommentStatement / DeclareStatement  / AssignmentStatement / MathStatement / OtherStatement
+  = CommentStatement / DeclareStatement  / AssignmentStatement / MathStatement / CallStatement / OtherStatement
 
 // Datatypes Representation
 typeRepresentations
