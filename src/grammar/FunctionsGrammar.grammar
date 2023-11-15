@@ -17,7 +17,7 @@ start
   = RootArray
 
 definitions 
-	= functionDefinition / DeclareStatement / CommentStatement
+	= functionDefinition / statements
 
 functionDefinition
   = functionKeyword ws returnType:typeRepresentations ws colon ws openBrace ws
@@ -130,6 +130,14 @@ DeclareStatement
   = "declare" ws colon ws value:DeclareType ws
     { return { type: "variableDeclaration", name: value["name"], init: { type: value["type"], value: value["value"]}, additional: value }; }
 
+AssignmentStatement 
+  = "assign" ws colon ws value:AssignType ws
+   { return { type: "variableAssignment", name: value.to, value: value.from} }
+
+MathStatement 
+  = "math" ws colon ws value:MathType ws
+   { return { type: "binaryExpression", left: value.left,  operator: value.op, right: value.right} }
+
 OtherStatement 
  = name:([a-zA-Z_][a-zA-Z0-9_]*) ws colon ws value:(parameterArray / types) ws
     { return { name: appendElements(name), value: value }; }
@@ -137,7 +145,15 @@ OtherStatement
 
 CommentType
   = string / number / CodeObject
+  
+MathType 
+  = openBrace ws "left" ws colon ws left:(types / OtherStatement) ws comma ws "op" ws colon ws op:(string) ws comma "right" ws colon ws right:(types / OtherStatement) ws closeBrace ws
+  { return {left:left, op:op, right:right}; }
 
+AssignType 
+  = openBrace ws "to" ws colon ws to:identifier ws comma ws "value" ws colon ws command:(types / OtherStatement) ws closeBrace ws
+  { return {to:to, from:command}; }
+  
 DeclareType
   = openBrace ws
     content:declarationPart
@@ -167,7 +183,7 @@ scopeValue
 // Statements
 
 statements
-  = CommentStatement / DeclareStatement / OtherStatement 
+  = CommentStatement / DeclareStatement  / AssignmentStatement / MathStatement / OtherStatement
 
 // Datatypes Representation
 typeRepresentations
@@ -285,7 +301,8 @@ ws
   = [ \t\n\r]*
 
 identifier
-  = [a-zA-Z_][a-zA-Z0-9_]* 
+  = value:([a-zA-Z_][a-zA-Z0-9_]*) 
+  { return appendElements(value); }
 
 unescaped
   = [^\0-\x1F\x22\x5C]

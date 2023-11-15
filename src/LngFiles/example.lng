@@ -41,5 +41,17 @@
         {
             type:<int>, scope: public, name: "abc", value: 1
         }
+    },
+    {
+        assign: 
+        { 
+            to: abc,  value: 1 
+        }
+    },
+    {
+        math:
+        {
+            left: 5 , op: "+" ,right: 2
+        }
     }
 ]
