@@ -14,14 +14,17 @@
 }
 
 start
-  = functionDefinition
+  = RootArray
+
+definitions 
+	= functionDefinition / DeclareStatement / CommentStatement
 
 functionDefinition
   = functionKeyword ws returnType:typeRepresentations ws colon ws openBrace ws
-    nameKeyword ws colon ws functionName:string ws comma ws
-    parameterKeyword ws colon ws parameterObj:object ws comma ws
-    codeNameKeyword colon ws code:array ws closeBrace ws
-    { return { functionName, returnType, parameters: parameterObj, code }; }
+    nameKeyword ws colon ws name:string ws comma ws
+    parameterKeyword ws colon ws parameterObj:parameterObj ws comma ws
+    codeNameKeyword colon ws statements:array ws closeBrace ws
+    { return { type: "procStatement", name, returnType, args: parameterObj, statements:statements }; }
 
 // JSON Standard
 object
@@ -30,16 +33,32 @@ object
       ws head:member ws
       tail:(comma ws m:member { return m; })*
       {
-        var result = {};
-        [head].concat(tail).forEach(function(element) {
-          result[element.name] = element.value;
-        });
-        return result;
+        return head
       }
     )?
     closeBrace
     { return members !== null ? members : {}; }
 
+parameterObj
+  = openBrace
+    members:(
+      ws head:parameterMember ws
+      tail:(comma ws m:parameterMember { return m; })*
+      {
+      	const array = [];
+      	[head].concat(tail).forEach(function(element) {
+          array.push(element);
+        });
+        return array;
+      }
+    )?
+    closeBrace
+    { return members !== null ? members : {}; }
+
+parameterMember
+  = ws name:string ws colon ws value:typeRepresentations ws
+    { return { type: "identifier", name: name, value: value }; }
+   
 member
   = ws name:string ws colon ws value:typeRepresentations ws
     { return { name: name, value: value }; }
@@ -62,27 +81,35 @@ CodeObject
       ws head:(statements) ws
       tail:(comma ws m:(statements) { return m; })*
       {
-        var result = {};
-        [head].concat(tail).forEach(function(element) {
-          result[element.name] = element.value;
-        });
-        return result;
+        return head
       }
     )?
     closeBrace
-    {
-      if (members !== null) {
-        // Check if "declare" or "comment" is present
-        if ("declare" in members || "comment" in members) {
-          return members;
-        } else {
-          // Handle code block without "declare" or "comment"
-          return members;
-        }
-      } else {
-        return {};
+    { return members !== null ? members : {}; }
+
+    
+RootObject
+  = openBrace
+    members:(
+      ws head:(definitions) ws
+      tail:(comma ws m:(definitions) { return m; })*
+      {
+        return head
       }
-    }
+    )?
+    closeBrace
+    { return members !== null ? members : {}; }
+
+
+RootArray
+  = begin_array
+    values:(
+      head:RootObject
+      tail:(comma ws v:RootObject { return v; })*
+      { return [head].concat(tail); }
+    )?
+    end_array
+    { return values !== null ? values : []; }
 
 parameterArray
   = begin_array
@@ -97,11 +124,11 @@ parameterArray
 // New Rules for Comment and Declare Statements
 CommentStatement
   = "comment" ws colon ws value:CommentType ws
-    { return { name: ("comment"), value: value }; }
+    { return { type: "commentStatement", value: value }; }
 
 DeclareStatement
   = "declare" ws colon ws value:DeclareType ws
-    { return { name: "declare", value: value }; }
+    { return { type: "declareStatement", value: value }; }
 
 OtherStatement 
  = name:([a-zA-Z_][a-zA-Z0-9_]*) ws colon ws value:(parameterArray / types) ws
@@ -134,8 +161,8 @@ declarationPart
   { return {"type" : type, "scope" : scope, "name" : name, "value" : value}}
 
 scopeValue
-  =  scope: "private" / "public"
-    { return trimQuotes(scope); }
+  =  scope: "private" / scope: "public"
+    { return scope }
 
 // Statements
 

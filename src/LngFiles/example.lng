@@ -1,31 +1,45 @@
-function<int>: {
-    functionName: "myFunction",
-    parameters: {
-        "parameter1":<int>,
-        "abc":<float>,
-        "anotherParam":<int>
-    },
-    code: 
-    [
-        {
-            comment : 
-            "Hello World"
-        },
-        {
-            declare : 
-            {
-                type: <int>, scope: private, name: "abc", value: 9
-            }
-        },
-        {
-            comment : 
-            "This is a comment"
-        },
-        {
-            theFunctionCall : [1,9]
-        },
-        {
-            abc: "hello world"
+[
+    {
+        function<int>: {
+            functionName: "myFunction",
+            parameters: {
+                "parameter1":<int>,
+                "abc":<float>,
+                "anotherParam":<int>
+            },
+            code: 
+            [
+                {
+                    comment : 
+                    "Hello World"
+                },
+                {
+                    declare : 
+                    {
+                        type: <int>, scope: private, name: "abc", value: 9
+                    }
+                },
+                {
+                    comment : 
+                    "This is a comment"
+                },
+                {
+                    theFunctionCall : [1,9]
+                },
+                {
+                    abc: ""
+                }
+            ]
         }
-    ]
-}
+    },
+    {
+        comment :
+        "This is a comment"
+    },
+    {
+        declare:
+        {
+            type:<int>, scope: public, name: "abc", value: 1
+        }
+    }
+]
