@@ -7,15 +7,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "run" : "node ./build/index.js",
     "runBuild" : "tsc && node ./build/index.js",
-    "compiledRun" : "pegjs src/grammar/FunctionsGrammar.grammar && tsc && node ./build/index.js"
+    "compiledRun" : "pegjs src/grammar/FunctionsGrammar.grammar && tsc --noEmit && node ./build/index.js",
+    "bundle": "browserify ide/index.ts -p [ tsify --downlevelIteration ] > ide/bundle.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "pegjs": "^0.10.0",
-    "typescript": "^5.2.2"
+    "typescript": "^3.4.3"
   },
   "devDependencies": {
-    "@types/node": "^20.9.0"
+    "@types/node": "^11.13.4",
+    "@types/webassembly-js-api": "^0.0.3",
+    "tsify": "^4.0.1",
+    "browserify": "^16.2.3"
   }
 }

@@ -1,4 +1,14 @@
+import { runtime } from './compiler/compiler'
 import * as fs from 'fs';
-import * as parser from './grammar/FunctionsGrammar';
+const output: any[] = [];
+const display = new Uint8Array(10000);
 
-console.log(JSON.stringify(parser.parse(fs.readFileSync('src/LngFiles/example2.lng', 'utf-8'))));
+(async () => {
+    const result = await runtime(fs.readFileSync('src/LngFiles/example2.lng', 'utf-8'), 
+        {
+            print: d => output.push(d),
+            display
+        }
+    );
+    console.log(result);
+});

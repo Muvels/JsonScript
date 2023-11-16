@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="OIG.jpeg">
+  <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  <title>JsonScript</title>
+  <script src="https://unpkg.com/codemirror@5.45.0/lib/codemirror.js"></script>
+    <script src="https://unpkg.com/codemirror@5.45.0/addon/mode/simple.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.45.0/theme/abcdef.css" />
+    <link rel="stylesheet" href="https://unpkg.com/codemirror@5.45.0/lib/codemirror.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark justify-content-between">
+        <div>
+          <button id="compile" class="btn btn-outline-success">
+            Run (compiler)
+          </button>
+          <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#shareModal">
+            Share
+          </button>
+        </div>
+        <form class="form-inline my-2 my-lg-0">
+          <a class="navbar-brand text-light" href="https://github.com/Muvels/JsonScript">JsonScript</a>
+          <a href="https://github.com/Muvels/JsonScript">
+            <img src="OIG.jpeg" style="width: 32px; height: 32px" class="rounded-circle"/>
+          </a>
+        </form>
+      </nav>
+      <div class="modal fade" id="shareModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Share your playground code ...</h5>
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" id="shareUrl">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="copyUrl">Copy</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+<div class="anotherContainer">
+  <div class="box">
+    <textarea class="form-control" id="code" wrap="true">
+[
+    {
+        console:  
+        { 
+            math: { left: 1, op: "+", right: 1}
+        }
+    },
+    {
+        comment:
+        "Here is a simple Statment, that does a simple binary calculation, to print it out"
+    }
+]
+        </textarea>
+    <!-- Content for the first box -->
+  </div>
+  
+    <textarea class="box text-light"
+            width="100%"
+            height="100%"
+            id="output"
+            class="form-control"
+            wrap="off"
+          >
+        JsonScript is a very general programming language which I developed because JSON is fun.
+        The language compiles to WebAssambley, which is even faster then Javascript.
+        The style of the language trys to be close to the AST (Abstract Syntax Tree).
+        The JsonScript compiler is written in TypeScript, you can try it out using the above editor. When you click the 'run' button above
+        </textarea>
+        <canvas id="canvas" width="300" height="300"></canvas>
+</div>
+<script src="bundle.js"></script>
+</body>
+</html>
+
+<style>
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.anotherContainer {
+    overflow: hidden;
+  display: flex;
+  height: 97%;
+}
+
+.box {
+  overflow: hidden;
+  flex: 1;
+  background-color: black;
+  border: 1px solid black;
+  max-width: 50%;
+  /* Add additional styling as needed */
+}
+nav .btn {
+        margin-right: 10px;
+}
+
+.CodeMirror,
+      textarea {
+        height: 100%;
+        width: 100%;
+}
+
+canvas {
+    display: none;
+}
+
+
+
+</style>
