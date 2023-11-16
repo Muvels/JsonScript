@@ -4,7 +4,7 @@ This is the custom programming language JsonScript, which is designed with a syn
 
 ![OIG](https://github.com/Muvels/JsonScript/assets/58641436/db053829-993f-4936-8cd6-3a3215fa2c05)
 
-## JSONScript Syntax
+## JsonScript Syntax
 
 JsonScript code is structured like a JSON array, where each element represents a language construct. The current syntax supports the following elements:
 
