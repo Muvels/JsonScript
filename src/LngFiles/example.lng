@@ -27,9 +27,6 @@
                     -> : { proc: myFunction, parameters : [0]}
                 },
                 {
-                    abc: 
-                },
-                {
                     math : 
                     {
                         left: 5,
