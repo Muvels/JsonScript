@@ -130,6 +130,10 @@ DeclareStatement
   = "declare" ws colon ws value:DeclareType ws
     { return { type: "variableDeclaration", name: value["name"].value, initializer: { type: value["value"].type, value: value["value"].value}, additional: value }; }
 
+PrintStatement
+  = "console" ws colon ws value:printType ws 
+    { return { type: "printStatement", expression: value.value} }
+     
 AssignmentStatement 
   = "assign" ws colon ws value:AssignType ws
    { return { type: "variableAssignment", name: value.to.value, value: value.from} }
@@ -149,13 +153,17 @@ OtherStatement
 
 CommentType
   = string / number / CodeObject
+  
+printType
+  = value:(CodeObject / types / identifier)
+  { return {value:value}; }
 
 CallType
   = openBrace ws "proc" ws colon ws functionName:identifier ws comma ws "parameters" ws colon ws parameters:parameterArray ws closeBrace ws
   { return {functionName: functionName.value, parameters: parameters}}
   
 MathType 
-  = openBrace ws "left" ws colon ws left:(identifier / types / CodeObject) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(identifier / types / CodeObject) ws closeBrace ws
+  = openBrace ws "left" ws colon ws left:(CodeObject / types / identifier) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(CodeObject / types / identifier) ws closeBrace ws
   { return {left:left, op:op, right:right}; }
 
 AssignType 
@@ -191,7 +199,7 @@ scopeValue
 // Statements
 
 statements
-  = CommentStatement / DeclareStatement  / AssignmentStatement / MathStatement / CallStatement / OtherStatement
+  = CommentStatement / DeclareStatement  / AssignmentStatement / MathStatement / CallStatement / PrintStatement / OtherStatement
 
 // Datatypes Representation
 typeRepresentations

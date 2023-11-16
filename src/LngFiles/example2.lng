@@ -27,5 +27,8 @@
     },
     {
         -> : { proc: abc, parameters : [0]}
+    },
+    {
+        console: 10
     }
 ]
