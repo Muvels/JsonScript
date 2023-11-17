@@ -1901,9 +1901,9 @@ function peg$parse(input, options) {
     s0 = peg$currPos;
     s1 = peg$parseCodeObject();
     if (s1 === peg$FAILED) {
-      s1 = peg$parsetypes();
+      s1 = peg$parseidentifier();
       if (s1 === peg$FAILED) {
-        s1 = peg$parseidentifier();
+        s1 = peg$parsetypes();
       }
     }
     if (s1 !== peg$FAILED) {
@@ -2070,9 +2070,9 @@ function peg$parse(input, options) {
               if (s6 !== peg$FAILED) {
                 s7 = peg$parseCodeObject();
                 if (s7 === peg$FAILED) {
-                  s7 = peg$parsetypes();
+                  s7 = peg$parseidentifier();
                   if (s7 === peg$FAILED) {
-                    s7 = peg$parseidentifier();
+                    s7 = peg$parsetypes();
                   }
                 }
                 if (s7 !== peg$FAILED) {
@@ -2120,9 +2120,9 @@ function peg$parse(input, options) {
                                               if (s22 !== peg$FAILED) {
                                                 s23 = peg$parseCodeObject();
                                                 if (s23 === peg$FAILED) {
-                                                  s23 = peg$parsetypes();
+                                                  s23 = peg$parseidentifier();
                                                   if (s23 === peg$FAILED) {
-                                                    s23 = peg$parseidentifier();
+                                                    s23 = peg$parsetypes();
                                                   }
                                                 }
                                                 if (s23 !== peg$FAILED) {
@@ -2289,7 +2289,10 @@ function peg$parse(input, options) {
                               if (s14 !== peg$FAILED) {
                                 s15 = peg$parseCodeObject();
                                 if (s15 === peg$FAILED) {
-                                  s15 = peg$parsetypes();
+                                  s15 = peg$parseidentifier();
+                                  if (s15 === peg$FAILED) {
+                                    s15 = peg$parsetypes();
+                                  }
                                 }
                                 if (s15 !== peg$FAILED) {
                                   s16 = peg$parsews();

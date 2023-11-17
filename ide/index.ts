@@ -8,7 +8,7 @@ export const keywords = [
     "functionName",
     "function",
     "while",
-    "endwhile",
+    "assign",
     "if",
     "endif",
     "else",
@@ -142,6 +142,8 @@ const run = async (runtime: Runtime) => {
     logMessage(`Executing ... `);
 
     tickFunction();
+    logMessage(`Execution Done`);
+
     updateCanvas(display);
 
     compileButton!.classList.remove("active");

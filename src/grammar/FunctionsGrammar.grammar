@@ -155,7 +155,7 @@ CommentType
   = string / number / CodeObject
   
 printType
-  = value:(CodeObject / types / identifier)
+  = value:(CodeObject / identifier / types)
   { return {value:value}; }
 
 CallType
@@ -163,11 +163,11 @@ CallType
   { return {functionName: functionName.value, parameters: parameters}}
   
 MathType 
-  = openBrace ws "left" ws colon ws left:(CodeObject / types / identifier) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(CodeObject / types / identifier) ws closeBrace ws
+  = openBrace ws "left" ws colon ws left:(CodeObject / identifier / types) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(CodeObject / identifier / types) ws closeBrace ws
   { return {left:left, op:op, right:right}; }
 
 AssignType 
-  = openBrace ws "to" ws colon ws to:identifier ws comma ws "value" ws colon ws command:(CodeObject / types) ws closeBrace ws
+  = openBrace ws "to" ws colon ws to:identifier ws comma ws "value" ws colon ws command:(CodeObject / identifier / types) ws closeBrace ws
   { return {to:to, from:command}; }
   
 DeclareType
