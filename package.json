@@ -8,7 +8,7 @@
     "run" : "node ./build/index.js",
     "runBuild" : "tsc && node ./build/index.js",
     "compiledRun" : "pegjs src/grammar/FunctionsGrammar.grammar && tsc --noEmit && node ./build/index.js",
-    "bundle": "browserify ide/index.ts -p [ tsify --downlevelIteration ] > ide/bundle.js"
+    "bundle": "browserify docs/index.ts -p [ tsify --downlevelIteration ] > docs/bundle.js"
   },
   "author": "",
   "license": "ISC",
