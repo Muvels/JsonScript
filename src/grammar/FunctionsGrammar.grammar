@@ -128,7 +128,7 @@ CommentStatement
 
 DeclareStatement
   = "declare" ws colon ws value:DeclareType ws
-    { return { type: "variableDeclaration", name: value["name"].value, initializer: { type: value["value"].type, value: value["value"].value}, additional: value }; }
+    { return { type: "variableDeclaration", name: value["name"].value, initializer:value['value'], additional: value }; }
 
 PrintStatement
   = "console" ws colon ws value:printType ws 

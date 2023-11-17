@@ -165,7 +165,7 @@ function peg$parse(input, options) {
       peg$c13 = function(value) { return { type: "commentStatement", value: value }; },
       peg$c14 = "declare",
       peg$c15 = peg$literalExpectation("declare", false),
-      peg$c16 = function(value) { return { type: "variableDeclaration", name: value["name"].value, initializer: { type: value["value"].type, value: value["value"].value}, additional: value }; },
+      peg$c16 = function(value) { return { type: "variableDeclaration", name: value["name"].value, initializer:value['value'], additional: value }; },
       peg$c17 = "console",
       peg$c18 = peg$literalExpectation("console", false),
       peg$c19 = function(value) { return { type: "printStatement", expression: value.value} },
