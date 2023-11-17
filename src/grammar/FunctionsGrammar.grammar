@@ -142,6 +142,10 @@ CallStatement
   = "->" ws colon ws value:CallType ws
   { return {type:"callStatement", name: value.functionName, args:value.parameters};}
   
+LoopStatement
+  = "while" ws colon ws value:LoopType ws
+  { return {type: "whileStatement", expression: value.condition, statements: value.loop}}
+  
 MathStatement 
   = "math" ws colon ws value:MathType ws
    { return { type: "binaryExpression", left: value.left,  operator: value.op.value, right: value.right} }
@@ -161,6 +165,10 @@ printType
 CallType
   = openBrace ws "proc" ws colon ws functionName:identifier ws comma ws "parameters" ws colon ws parameters:parameterArray ws closeBrace ws
   { return {functionName: functionName.value, parameters: parameters}}
+  
+LoopType
+  = openBrace ws ("condition" / "cond") ws colon ws openBrace ws condition:MathStatement ws closeBrace ws comma ws "loop" ws colon ws loop:array ws closeBrace ws
+  { return {condition: condition, loop: loop}}
   
 MathType 
   = openBrace ws "left" ws colon ws left:(CodeObject / identifier / types) ws comma ws "op" ws colon ws op:(string) ws comma ws "right" ws colon ws right:(CodeObject / identifier / types) ws closeBrace ws
@@ -199,7 +207,7 @@ scopeValue
 // Statements
 
 statements
-  = CommentStatement / DeclareStatement  / AssignmentStatement / MathStatement / CallStatement / PrintStatement / OtherStatement
+  = CommentStatement / DeclareStatement  / AssignmentStatement / MathStatement / CallStatement / PrintStatement / LoopStatement / OtherStatement
 
 // Datatypes Representation
 typeRepresentations
