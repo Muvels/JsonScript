@@ -4,7 +4,9 @@ This is the custom programming language JsonScript, which is designed with a syn
 
 ![OIG-removebg](docs/OIG-removebg.png)
 
-
+## Online Editor
+To experiment with JsonScript there is a small online Editor, try it out [here](https://muvels.github.io/JsonScript/) <br/>
+Examples can be found in the ```src/LngFiles ``` Folder.
 ## JsonScript Syntax
 
 JsonScript code is structured like a JSON array, where each element represents a language construct. The current syntax supports the following elements:
