@@ -196,7 +196,7 @@ declarationPart
   = "type" ws ":" ws type:typeRepresentations comma ws
    "scope" ws ":" ws scope:scopeValue comma ws
    "name" ws ":" ws name:string comma ws
-   "value" ws ":" ws value:types ws
+   "value" ws ":" ws value:(CodeObject / identifier / types) ws
   
   { return {"type" : type, "scope" : scope, "name" : name, "value" : value}}
 

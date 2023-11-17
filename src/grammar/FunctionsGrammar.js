@@ -2878,7 +2878,13 @@ function peg$parse(input, options) {
                                                   if (s24 !== peg$FAILED) {
                                                     s25 = peg$parsews();
                                                     if (s25 !== peg$FAILED) {
-                                                      s26 = peg$parsetypes();
+                                                      s26 = peg$parseCodeObject();
+                                                      if (s26 === peg$FAILED) {
+                                                        s26 = peg$parseidentifier();
+                                                        if (s26 === peg$FAILED) {
+                                                          s26 = peg$parsetypes();
+                                                        }
+                                                      }
                                                       if (s26 !== peg$FAILED) {
                                                         s27 = peg$parsews();
                                                         if (s27 !== peg$FAILED) {

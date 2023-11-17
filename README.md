@@ -62,7 +62,6 @@ JsonScript code is structured like a JSON array, where each element represents a
             "value": "can be a Literal | CodeBlock | Variable"
     }
     ```
-
 6. **While-Loop:**
     ```json
     {
@@ -76,6 +75,12 @@ JsonScript code is structured like a JSON array, where each element represents a
     ```json
     {
         "Comming Soon :)"
+    }
+    ```
+8. **Console Logging:**
+    ```json
+    {
+        "console" : "can be a Literal | CodeBlock | Variable"
     }
     ```
 
