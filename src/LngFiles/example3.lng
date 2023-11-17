@@ -1,0 +1,29 @@
+[
+    {
+        function<int>: {
+            functionName: "executeLoop",
+            parameters: {
+                "y":<int>
+            },
+            code: 
+            [
+                {
+                    while:  { 
+                                condition : { math: { left: y, op: "", right: 1} },
+                                loop : [
+                                    { console: y },
+                                    {
+                                        assign: {
+                                            to: y, value: { math: { left: y, op: "-", right: 1} }
+                                        }
+                                    }    
+                                ]
+                            }
+                }
+            ]
+        }
+    },
+    {
+        -> : { proc: abc, parameters : [10]}
+    }
+]
