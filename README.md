@@ -13,41 +13,13 @@ JsonScript code is structured like a JSON array, where each element represents a
     ```json
     {
         "function<int>": {
-            "functionName": "myFunction",
+            "functionName": "must be a string, give the Function a name",
             "parameters": {
                 "parameter1": "<int>",
-                "abc": "<float>",
-                "anotherParam": "<int>"
+                "parameter2": "<float>",
+                "Define as many parameters as you want."
             },
-            "code": [
-                {
-                    "comment": "Hello World"
-                },
-                {
-                    "declare": {
-                        "type": "<int>",
-                        "scope": "private",
-                        "name": "abc",
-                        "value": 9
-                    }
-                },
-                {
-                    "comment": "This is a comment"
-                },
-                {
-                    "->": {
-                        "proc": "myFunction",
-                        "parameters": [0]
-                    }
-                },
-                {
-                    "math": {
-                        "left": 5,
-                        "op": "+",
-                        "right": 2
-                    }
-                }
-            ]
+            "code": [ "CodeBlock" ]
         }
     }
     ```
@@ -55,7 +27,7 @@ JsonScript code is structured like a JSON array, where each element represents a
 2. **Comments:**
     ```json
     {
-        "comment": "This is a comment"
+        "comment": "Must be a string. This Code wont be compiled, its just a comment"
     }
     ```
 
@@ -63,10 +35,10 @@ JsonScript code is structured like a JSON array, where each element represents a
     ```json
     {
         "declare": {
-            "type": "<int>",
-            "scope": "public",
-            "name": "abc",
-            "value": 1
+            "type": "can be <int> | <float> | <char> | <string>",
+            "scope": "can be public | private",
+            "name": "must be a string",
+            "value": "can be a Literal | CodeBlock | Variable"
         }
     }
     ```
@@ -75,9 +47,9 @@ JsonScript code is structured like a JSON array, where each element represents a
     ```json
     {
         "math": {
-            "left": 5,
-            "op": "+",
-            "right": 2
+            "left": "can be a Literal | CodeBlock | Variable",
+            "op": " `+` | `-` | `*` | `/` | `==` | `<` | `>` | `&&` ",
+            "right": "can be a Literal | CodeBlock | Variable"
         }
     }
     ```
@@ -86,15 +58,24 @@ JsonScript code is structured like a JSON array, where each element represents a
     ```json
     {
         "assign": {
-            "to": "a",
-            "value": {
-                "math": {
-                    "left": 1,
-                    "op": "+",
-                    "right": 1
-                }
-            }
+            "to": "Variable you want to Assign to.",
+            "value": "can be a Literal | CodeBlock | Variable"
+    }
+    ```
+
+6. **While-Loop:**
+    ```json
+    {
+        "while": {
+            "condition": { "In here you have to provide a `math:` expression (4)"},
+            "loop": ["Loop requires a Code Block, so here you can use any CodeBlock from above."]
         }
+    }
+    ```
+7. **If-Statements:**
+    ```json
+    {
+        "Comming Soon :)"
     }
     ```
 
