@@ -2,7 +2,7 @@
 
 This is the custom programming language JsonScript, which is designed with a syntax specified in JSON format. The compiler compiles JsonScript code into WebAssembly for efficient execution.
 
-![OIG-removebg](https://github.com/Muvels/JsonScript/assets/58641436/01dcbe6e-b520-4d22-ba83-3b3c786e9c2c)
+![OIG-removebg](https://github.com/Muvels/JsonScript/assets/58641436/78230939-f7ae-4b77-8b96-b75994d16cfd)
 
 
 ## JsonScript Syntax
