@@ -9,7 +9,7 @@
             [
                 {
                     while:  { 
-                                condition : { math: { left: y, op: "", right: 1} },
+                                condition : { math: { left: y, op: ">", right: 1} },
                                 loop : [
                                     { console: y },
                                     {
@@ -24,6 +24,6 @@
         }
     },
     {
-        -> : { proc: abc, parameters : [10]}
+        -> : { proc: executeLoop, parameters : [10]}
     }
 ]
